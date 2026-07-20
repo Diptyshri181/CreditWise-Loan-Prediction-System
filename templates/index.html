@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CreditWise - Bank Portal</title>
+    <!-- Fonts and Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --accent-blue: #38bdf8;
+            --accent-green: #10b981;
+            --accent-red: #ef4444;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-color: #334155;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Ambient Glow Background Effect */
+        body::before {
+            content: '';
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(56, 189, 248, 0.15) 0%, transparent 70%);
+            top: 10%;
+            left: 15%;
+            z-index: -1;
+        }
+
+        .dashboard-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            width: 100%;
+            max-width: 550px;
+            padding: 35px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+            transform: translateY(20px);
+            opacity: 0;
+            animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header .logo {
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            color: var(--text-main);
+        }
+
+        .header .logo span {
+            color: var(--accent-blue);
+        }
+
+        .header p {
+            color: var(--text-muted);
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        .form-group {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .form-group i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--accent-blue);
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px 15px 14px 45px;
+            box-sizing: border-box;
+            background-color: #0f172a;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            color: var(--text-main);
+            font-family: 'Poppins', sans-serif;
+            font-size: 15px;
+            transition: all 0.3s ease;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2);
+        }
+
+        input::placeholder {
+            color: #475569;
+        }
+
+        /* Chrome/Safari arrows remove */
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        .button-group {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 12px;
+            margin-top: 25px;
+        }
+
+        button {
+            padding: 14px;
+            border-radius: 10px;
+            border: none;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            font-size: 15px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+        }
+
+        button[type="submit"] {
+            background-color: var(--accent-blue);
+            color: #0f172a;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #7dd3fc;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(56, 189, 248, 0.3);
+        }
+
+        .btn-clear {
+            background-color: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-muted);
+        }
+
+        .btn-clear:hover {
+            background-color: #334155;
+            color: var(--text-main);
+            border-color: #475569;
+        }
+
+        /* Animated Result Container */
+        .result-box {
+            margin-top: 25px;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 16px;
+            animation: popIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0.9); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .approved {
+            background-color: rgba(16, 185, 129, 0.15);
+            border: 1px solid var(--accent-green);
+            color: #34d399;
+        }
+
+        .rejected {
+            background-color: rgba(239, 68, 68, 0.15);
+            border: 1px solid var(--accent-red);
+            color: #f87171;
+        }
+
+        .result-icon {
+            font-size: 32px;
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="dashboard-card">
+        <div class="header">
+            <div class="logo">Credit<span>Wise</span></div>
+            <p><i class="fa-solid fa-building-columns"></i> Internal Bank Underwriting Portal</p>
+        </div>
+
+        <form action="/predict" method="POST" id="loanForm">
+            <div class="form-group">
+                <i class="fa-solid fa-wallet"></i>
+                <input type="number" step="any" name="applicant_income" placeholder="Applicant Annual Income" required>
+            </div>
+            <div class="form-group">
+                <i class="fa-solid fa-hand-holding-dollar"></i>
+                <input type="number" step="any" name="coapplicant_income" placeholder="Coapplicant Income" required>
+            </div>
+            <div class="form-group">
+                <i class="fa-solid fa-piggy-bank"></i>
+                <input type="number" step="any" name="savings" placeholder="Total Savings Account Balance" required>
+            </div>
+            <div class="form-group">
+                <i class="fa-solid fa-star-half-stroke"></i>
+                <input type="number" step="any" name="credit_score" placeholder="Credit Score (FICO)" required>
+            </div>
+            <div class="form-group">
+                <i class="fa-solid fa-percent"></i>
+                <input type="number" step="any" name="dti_ratio" placeholder="Debt-to-Income (DTI) Ratio" required>
+            </div>
+            
+            <div class="button-group">
+                <button type="submit"><i class="fa-solid fa-chart-pie"></i> Analyze Risk Status</button>
+                <button type="button" class="btn-clear" onclick="clearDashboard()"><i class="fa-solid fa-rotate-left"></i> Clear</button>
+            </div>
+        </form>
+
+        {% if prediction_text %}
+            {% if "APPROVED" in prediction_text %}
+                <div class="result-box approved" id="resultContainer">
+                    <div class="result-icon"><i class="fa-solid fa-circle-check"></i></div>
+                    <div>{{ prediction_text }}</div>
+                </div>
+            {% else %}
+                <div class="result-box rejected" id="resultContainer">
+                    <div class="result-icon"><i class="fa-solid fa-circle-xmark"></i></div>
+                    <div>{{ prediction_text }}</div>
+                </div>
+            {% endif %}
+        {% endif %}
+    </div>
+
+    <script>
+        // Clear functions that handles UI reset instantly
+        function clearDashboard() {
+            // Form targets reset
+            document.getElementById("loanForm").reset();
+            
+            // Output text boxes reset if visible
+            const resultBox = document.getElementById("resultContainer");
+            if (resultBox) {
+                resultBox.style.display = "none";
+            }
+            
+            // Redirect smoothly to index page to completely wipe flask state session values
+            window.location.href = "/";
+        }
+    </script>
+</body>
+</html>

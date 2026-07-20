@@ -248,3 +248,16 @@ print("Recall: ", recall_score(y_test, y_pred))
 print("F1 score: ", f1_score(y_test, y_pred))
 print("Accuracy: ", accuracy_score(y_test, y_pred))
 print("CM: ", confusion_matrix(y_test, y_pred))
+import pickle
+
+# Best Model (Naive Bayes) ko save kar rahe hain
+with open("loan_model.pkl", "wb") as f:
+    pickle.dump(nb_model, f)
+
+# Scaler ko bhi save kar rahe hain kyunki new data ko bhi scale karna padega
+with open("scaler.pkl", "wb") as f:
+    pickle.dump(scaler, f)
+with open("model_columns.pkl", "wb") as f:
+    pickle.dump(list(X.columns), f)
+
+print("Model and Scaler saved successfully!")
